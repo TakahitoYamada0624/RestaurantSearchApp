@@ -19,12 +19,28 @@
                             <slider opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="aNW-D2-aaO">
                                 <rect key="frame" x="70" y="333" width="274" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <connections>
+                                    <action selector="releasedSlider:" destination="4cr-u2-L5U" eventType="touchUpInside" id="D2S-PY-vse"/>
+                                    <action selector="selectDistance:" destination="4cr-u2-L5U" eventType="valueChanged" id="Bh5-Li-Ejh"/>
+                                </connections>
                             </slider>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Qxq-Dt-4oa">
+                                <rect key="frame" x="184" y="619" width="46" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Button"/>
+                                <connections>
+                                    <action selector="searchRestaurants:" destination="4cr-u2-L5U" eventType="touchUpInside" id="6KD-oU-bnr"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="Gtf-Jp-7F2"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                     </view>
                     <navigationItem key="navigationItem" id="Prs-fi-cMn"/>
+                    <connections>
+                        <outlet property="distanceSlider" destination="aNW-D2-aaO" id="TxW-gv-fcB"/>
+                        <outlet property="searchButton" destination="Qxq-Dt-4oa" id="nye-Ei-ZNz"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="7xw-rF-iJC" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
