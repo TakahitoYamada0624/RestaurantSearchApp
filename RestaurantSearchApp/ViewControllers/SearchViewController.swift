@@ -51,33 +51,61 @@ class SearchViewController: UIViewController {
     //スライダーから指が離れた時に呼ばれる
     @IBAction func releasedSlider(_ sender: Any) {
         print("スライダーを外しました")
-        
+        getRestaurantsCount()
     }
     
     //検索ボタンを押した時に呼ばれる
     @IBAction func searchRestaurants(_ sender: Any) {
         print("検索ボタンが押されました。")
-        getRestaurantsCount()
     }
     
     //条件に合うレストラン数を取得する
     func getRestaurantsCount() {
-        let str = "http://webservice.recruit.co.jp/hotpepper/gourmet/v1/?key=c7355e2429b8ed1a&large_area=Z011&format=json"
-        guard let url: URL = URL(string: str) else {
-            print("urlがありませんでした。")
-            return
+        let url = "http://webservice.recruit.co.jp/hotpepper/gourmet/v1/?"
+        let apiKey = "c7355e2429b8ed1a"
+        let lat = self.latitude
+        let lng = self.longitude
+        var distance: Int?
+        
+        let value = distanceSlider.value
+        
+        switch value {
+        case 0 ..< 0.2:
+            distance = 1
+        case 0.2 ..< 0.4:
+            distance = 2
+        case 0.4 ..< 0.6:
+            distance = 3
+        case 0.6 ..< 0.8:
+            distance = 4
+        case 0.8 ... 1:
+            distance = 5
+        default:
+            print("予想外の挙動が起きました")
         }
-        AF.request(url).responseJSON { (response) in
+        
+        let parameters = [
+            "key": apiKey,
+            "lat": lat,
+            "lng": lng,
+            "range": distance!,
+            "format": "json"
+        ] as [String : Any]
+        
+        print("parameters", parameters)
+        
+        AF.request(url, method: .get, parameters: parameters).responseJSON { (response) in
             do {
                 guard let data = response.data else {return}
                 let decoder = JSONDecoder()
                 let result = try decoder.decode(Result.self, from: data)
+                self.searchButton.setTitle("\(result.results.matchCount)件", for: .normal)
+                print("\(result.results.matchCount)件")
             }catch{
                 print("変換に失敗しました。", error)
             }
         }
     }
-    
 }
 
 extension SearchViewController: CLLocationManagerDelegate {
