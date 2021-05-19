@@ -7,6 +7,7 @@
 
 import UIKit
 import CoreLocation
+import Alamofire
 
 class SearchViewController: UIViewController {
     
@@ -56,6 +57,25 @@ class SearchViewController: UIViewController {
     //検索ボタンを押した時に呼ばれる
     @IBAction func searchRestaurants(_ sender: Any) {
         print("検索ボタンが押されました。")
+        getRestaurantsCount()
+    }
+    
+    //条件に合うレストラン数を取得する
+    func getRestaurantsCount() {
+        let str = "http://webservice.recruit.co.jp/hotpepper/gourmet/v1/?key=c7355e2429b8ed1a&large_area=Z011&format=json"
+        guard let url: URL = URL(string: str) else {
+            print("urlがありませんでした。")
+            return
+        }
+        AF.request(url).responseJSON { (response) in
+            do {
+                guard let data = response.data else {return}
+                let decoder = JSONDecoder()
+                let result = try decoder.decode(Result.self, from: data)
+            }catch{
+                print("変換に失敗しました。", error)
+            }
+        }
     }
     
 }
@@ -96,8 +116,6 @@ extension SearchViewController: CLLocationManagerDelegate {
         let location = locations.first
         let latitude = location?.coordinate.latitude
         let longitude = location?.coordinate.longitude
-//        self.latitude = latitude ?? 0
-//        self.longitude = longitude ?? 0
         self.latitude = 35.680959106959
         self.longitude = 139.76730676352
         print("latitude:", self.latitude)
