@@ -57,6 +57,9 @@ class SearchViewController: UIViewController {
     //検索ボタンを押した時に呼ばれる
     @IBAction func searchRestaurants(_ sender: Any) {
         print("検索ボタンが押されました。")
+        let storyboard = UIStoryboard(name: "Restaurants", bundle: nil)
+        let restaurants = storyboard.instantiateViewController(withIdentifier: "Restaurants") as! RestaurantsViewController
+        navigationController?.pushViewController(restaurants, animated: true)
     }
     
     //条件に合うレストラン数を取得する
