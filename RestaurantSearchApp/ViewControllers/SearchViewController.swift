@@ -18,6 +18,7 @@ class SearchViewController: UIViewController {
     
     private var latitude: CLLocationDegrees = 0
     private var longitude: CLLocationDegrees = 0
+    var parameters = [String: Any]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -59,6 +60,7 @@ class SearchViewController: UIViewController {
         print("検索ボタンが押されました。")
         let storyboard = UIStoryboard(name: "Restaurants", bundle: nil)
         let restaurants = storyboard.instantiateViewController(withIdentifier: "Restaurants") as! RestaurantsViewController
+        restaurants.parameters = self.parameters
         navigationController?.pushViewController(restaurants, animated: true)
     }
     
@@ -87,11 +89,13 @@ class SearchViewController: UIViewController {
             print("予想外の挙動が起きました")
         }
         
-        let parameters = [
+        self.parameters = [
             "key": apiKey,
             "lat": lat,
             "lng": lng,
             "range": distance!,
+            "count": 50,
+            "start": 1,
             "format": "json"
         ] as [String : Any]
         
