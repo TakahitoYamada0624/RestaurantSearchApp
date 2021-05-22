@@ -23,6 +23,7 @@ class Restaurants: Decodable {
 }
 
 class Restaurant: Decodable {
+    let id: String
     let name: String
     let access: String
     let photo: Photo
