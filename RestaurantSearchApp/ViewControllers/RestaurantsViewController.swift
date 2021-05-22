@@ -80,6 +80,14 @@ extension RestaurantsViewController: UITableViewDataSource, UITableViewDelegate 
         return cell
     }
     
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let storyboard = UIStoryboard(name: "Detail", bundle: nil)
+        let detail = storyboard.instantiateViewController(withIdentifier: "Detail") as! DetailViewController
+        let id = restaurants[indexPath.row].id
+        detail.id = id
+        navigationController?.pushViewController(detail, animated: true)
+    }
+    
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         if indexPath.row == (restaurants.count - 20) {
             getMoreRestaurantsInfo()
