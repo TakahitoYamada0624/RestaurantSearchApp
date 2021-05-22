@@ -8,7 +8,14 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
-        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="FoodDrinkView" customModule="RestaurantSearchApp" customModuleProvider="target"/>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="FoodDrinkView" customModule="RestaurantSearchApp" customModuleProvider="target">
+            <connections>
+                <outlet property="courseLabel" destination="Ro0-BG-CG2" id="jrl-AX-DxB"/>
+                <outlet property="freeDrinkLabel" destination="ti5-k2-rS1" id="Q6g-Kh-WSI"/>
+                <outlet property="freeFoodLabel" destination="cAC-6u-aoB" id="uMN-XQ-2rw"/>
+                <outlet property="genreLabel" destination="7Bp-S8-Ud2" id="bm4-VA-FXj"/>
+            </connections>
+        </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <view contentMode="scaleToFill" id="iN0-l3-epB">
             <rect key="frame" x="0.0" y="0.0" width="414" height="230"/>
@@ -20,27 +27,27 @@
                     <nil key="textColor"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ro0-BG-CG2">
-                    <rect key="frame" x="10" y="87" width="394" height="21"/>
-                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ro0-BG-CG2">
+                    <rect key="frame" x="10" y="75.333333333333329" width="394" height="19.333333333333329"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="16"/>
                     <nil key="textColor"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ti5-k2-rS1">
-                    <rect key="frame" x="10" y="118" width="394" height="21"/>
-                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ti5-k2-rS1">
+                    <rect key="frame" x="10" y="104.66666666666667" width="394" height="19.333333333333329"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="16"/>
                     <nil key="textColor"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cAC-6u-aoB">
-                    <rect key="frame" x="10" y="154" width="394" height="21"/>
-                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cAC-6u-aoB">
+                    <rect key="frame" x="10" y="134" width="394" height="19.333333333333343"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="16"/>
                     <nil key="textColor"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7Bp-S8-Ud2">
-                    <rect key="frame" x="10" y="51" width="394" height="21"/>
-                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7Bp-S8-Ud2">
+                    <rect key="frame" x="10" y="46" width="394" height="19.333333333333329"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="16"/>
                     <nil key="textColor"/>
                     <nil key="highlightedColor"/>
                 </label>
@@ -48,9 +55,9 @@
             <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
             <color key="backgroundColor" systemColor="systemBackgroundColor"/>
             <constraints>
-                <constraint firstItem="cAC-6u-aoB" firstAttribute="top" secondItem="ti5-k2-rS1" secondAttribute="bottom" constant="15" id="7vi-3W-RdO"/>
-                <constraint firstItem="7Bp-S8-Ud2" firstAttribute="top" secondItem="JPc-GG-drn" secondAttribute="bottom" constant="20" id="8LX-rP-nqC"/>
-                <constraint firstItem="Ro0-BG-CG2" firstAttribute="top" secondItem="7Bp-S8-Ud2" secondAttribute="bottom" constant="15" id="FJv-3e-nve"/>
+                <constraint firstItem="cAC-6u-aoB" firstAttribute="top" secondItem="ti5-k2-rS1" secondAttribute="bottom" constant="10" id="7vi-3W-RdO"/>
+                <constraint firstItem="7Bp-S8-Ud2" firstAttribute="top" secondItem="JPc-GG-drn" secondAttribute="bottom" constant="15" id="8LX-rP-nqC"/>
+                <constraint firstItem="Ro0-BG-CG2" firstAttribute="top" secondItem="7Bp-S8-Ud2" secondAttribute="bottom" constant="10" id="FJv-3e-nve"/>
                 <constraint firstItem="cAC-6u-aoB" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="10" id="IkX-xa-cCG"/>
                 <constraint firstItem="JPc-GG-drn" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" constant="10" id="VU3-4m-r4h"/>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="cAC-6u-aoB" secondAttribute="trailing" constant="10" id="Vfj-WH-Knn"/>
