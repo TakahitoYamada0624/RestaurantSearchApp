@@ -32,6 +32,7 @@
 		F79D0A0E264EAF8F00DCE75A /* RestaurantCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F79D0A0D264EAF8F00DCE75A /* RestaurantCell.swift */; };
 		F7A0249726525FCA00F4068C /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7A0249626525FCA00F4068C /* SearchViewController.swift */; };
 		F7A0249C26525FED00F4068C /* Search.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F7A0249B26525FED00F4068C /* Search.storyboard */; };
+		F7E379C62659488B002D5528 /* APIRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7E379C52659488B002D5528 /* APIRequest.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -89,6 +90,7 @@
 		F79D0A0D264EAF8F00DCE75A /* RestaurantCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestaurantCell.swift; sourceTree = "<group>"; };
 		F7A0249626525FCA00F4068C /* SearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
 		F7A0249B26525FED00F4068C /* Search.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Search.storyboard; sourceTree = "<group>"; };
+		F7E379C52659488B002D5528 /* APIRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIRequest.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -186,6 +188,7 @@
 				F79D09C9264CE9BA00DCE75A /* Assets.xcassets */,
 				F79D09CB264CE9BA00DCE75A /* LaunchScreen.storyboard */,
 				F79D09CE264CE9BA00DCE75A /* Info.plist */,
+				F7E379C52659488B002D5528 /* APIRequest.swift */,
 			);
 			path = RestaurantSearchApp;
 			sourceTree = "<group>";
@@ -504,6 +507,7 @@
 				F79D09FF264CF14D00DCE75A /* RestaurantsViewController.swift in Sources */,
 				F72EE6B42657E80C00E024E7 /* FoodDrinkView.swift in Sources */,
 				F79D09C3264CE9B700DCE75A /* SceneDelegate.swift in Sources */,
+				F7E379C62659488B002D5528 /* APIRequest.swift in Sources */,
 				F72EE6962657989000E024E7 /* DetailViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
