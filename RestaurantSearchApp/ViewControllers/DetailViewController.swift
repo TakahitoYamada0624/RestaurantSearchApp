@@ -11,6 +11,8 @@ import Alamofire
 class DetailViewController: UIViewController {
     
     @IBOutlet weak var basicInformationView: BasicInformationView!
+    @IBOutlet weak var paymentView: PaymentView!
+    @IBOutlet weak var foodDrinkView: FoodDrinkView!
     
     private let url = "http://webservice.recruit.co.jp/hotpepper/gourmet/v1/?"
     private let apiKey = "c7355e2429b8ed1a"
@@ -34,11 +36,25 @@ class DetailViewController: UIViewController {
                 guard let data = response.data else {return}
                 let decoder = JSONDecoder()
                 let result = try decoder.decode(DetailResult.self, from: data)
-                print("result", result.results.restaurants.first?.address)
-                self.basicInformationView.name = result.results.restaurants[0].name
+                guard let restaurant = result.results.restaurants.first else {return}
+                self.passValue(restaurant: restaurant)
             }catch{
                 print("エラーが発生しました。", error)
             }
         }
+    }
+    
+    func passValue(restaurant: DetailRestaurant) {
+        basicInformationView.name = restaurant.name
+        basicInformationView.open = restaurant.open
+        basicInformationView.address = restaurant.address
+        basicInformationView.access = restaurant.access
+        paymentView.average = restaurant.budget.average
+        paymentView.budgetRemarks = restaurant.budgetRemarks
+        paymentView.card = restaurant.card
+        foodDrinkView.genre = restaurant.genre.name
+        foodDrinkView.course = restaurant.course
+        foodDrinkView.freeDrink = restaurant.freeDrink
+        foodDrinkView.freeFood = restaurant.freeFood
     }
 }
