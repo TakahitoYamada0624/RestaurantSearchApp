@@ -31,12 +31,33 @@ class APIRequest {
                 let decoder = JSONDecoder()
                 let result = try decoder.decode(Result.self, from: data)
                 let restaurants = result.results
-                print("before")
                 completion(restaurants)
             }catch{
                 print("エラーが発生しました。", error)
             }
         }
+    }
+    
+    func getRestaurantDetailInfo(id: String, completion: @escaping (DetailRestaurant) -> Void) {
+        let url = "http://webservice.recruit.co.jp/hotpepper/gourmet/v1/?"
+        let apiKey = "c7355e2429b8ed1a"
         
+        let parameters = [
+            "key": apiKey,
+            "id": id,
+            "format": "json"
+        ]
+        
+        AF.request(url, method: .get, parameters: parameters).responseJSON { (response) in
+            do{
+                guard let data = response.data else {return}
+                let decoder = JSONDecoder()
+                let detailResult = try decoder.decode(DetailResult.self, from: data)
+                guard let detailRestaurant = detailResult.results.restaurants.first else {return}
+                completion(detailRestaurant)
+            }catch{
+                print("エラーが発生しました。", error)
+            }
+        }
     }
 }
