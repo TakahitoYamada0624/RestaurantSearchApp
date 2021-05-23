@@ -15,6 +15,7 @@ class RestaurantsViewController: UIViewController {
     var restaurants = [Restaurant]()
     var addParameters = [String: Any]()
     let apiRequest = APIRequest()
+    var matchCount: Int = 0
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -29,6 +30,7 @@ class RestaurantsViewController: UIViewController {
         let addParameters = self.addParameters
         apiRequest.getRestaurantsInfo(addParameters: addParameters) { (restaurants) in
             self.restaurants = restaurants.restaurants
+            self.matchCount = restaurants.matchCount
             print("restaurants:", self.restaurants.count)
             self.restaurantsTableView.reloadData()
         }
@@ -75,7 +77,8 @@ extension RestaurantsViewController: UITableViewDataSource, UITableViewDelegate 
     
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         print("indexpath", indexPath.row)
-        if indexPath.row == (restaurants.count - 20) {
+        let count = restaurants.count
+        if indexPath.row == (count - 20) && count != matchCount {
             getMoreRestaurantsInfo()
             print("count", restaurants.count)
         }
