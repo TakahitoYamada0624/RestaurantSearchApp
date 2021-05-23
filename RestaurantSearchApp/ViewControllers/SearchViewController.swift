@@ -18,11 +18,11 @@ class SearchViewController: UIViewController {
     
     var locationManager: CLLocationManager!
     
-    private var latitude: CLLocationDegrees = 0
-    private var longitude: CLLocationDegrees = 0
+    private var latitude: CLLocationDegrees = 35.680959106959
+    private var longitude: CLLocationDegrees = 139.76730676352
     var addParameters = [String: Any]()
     let apiRequest = APIRequest()
-    private var notChooseDistance: Bool = true
+    private var notSelectDistance: Bool = true
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -63,7 +63,7 @@ class SearchViewController: UIViewController {
     //スライダーから指が離れた時に呼ばれる
     @IBAction func releasedSlider(_ sender: Any) {
         print("スライダーを外しました")
-        notChooseDistance = false
+        notSelectDistance = false
         getRestaurantsCount()
     }
     
@@ -72,7 +72,7 @@ class SearchViewController: UIViewController {
         print("検索ボタンが押されました。")
         let storyboard = UIStoryboard(name: "Restaurants", bundle: nil)
         let restaurants = storyboard.instantiateViewController(withIdentifier: "Restaurants") as! RestaurantsViewController
-        restaurants.parameters = self.addParameters
+        restaurants.addParameters = self.addParameters
         navigationController?.pushViewController(restaurants, animated: true)
     }
     
@@ -97,12 +97,12 @@ class SearchViewController: UIViewController {
         }
         
         let searchTextIsEmpty = searchBar.text?.isEmpty ?? false
-        let notSelectedDistance = notChooseDistance
+        let notSelectedDistance = notSelectDistance
         var addPara = [String: Any]()
         if searchTextIsEmpty && notSelectedDistance {
             addPara = [
-                "start": 1,
-                "large_area": "Z011"
+                "large_area": "Z011",
+                "start": 1
             ]
         }else if searchTextIsEmpty {
             addPara = [
@@ -114,8 +114,8 @@ class SearchViewController: UIViewController {
         }else if notSelectedDistance {
             guard let searchText = searchBar.text else {return}
             addPara = [
-                "start": 1,
-                "name_any": searchText
+                "name_any": searchText,
+                "start": 1
             ]
         }else{
             guard let searchText = searchBar.text else {return}
@@ -144,26 +144,23 @@ class SearchViewController: UIViewController {
 extension SearchViewController: CLLocationManagerDelegate {
     func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
         switch manager.authorizationStatus {
-        case .authorizedAlways:
-            print("authorizedAlways")
-            distanceSlider.isEnabled = true
-
-        case .authorizedWhenInUse:
-            print("authorizedWhenInUse")
+        case .authorizedAlways, .authorizedWhenInUse:
+            
             locationManager.startUpdatingLocation()
+            locationManager.distanceFilter = 10
             distanceSlider.isEnabled = true
 
         case .denied, .restricted:
             print("denied, restricted")
             showAlert()
             distanceSlider.isEnabled = false
-            notChooseDistance = true
+            notSelectDistance = true
 
         case .notDetermined:
             print("notDetermined")
             manager.requestWhenInUseAuthorization()
             distanceSlider.isEnabled = false
-            notChooseDistance = true
+            notSelectDistance = true
 
         default:
             print("扱っていないケースが発生しました。")
@@ -181,10 +178,10 @@ extension SearchViewController: CLLocationManagerDelegate {
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         let location = locations.first
-        let latitude = location?.coordinate.latitude
-        let longitude = location?.coordinate.longitude
-        self.latitude = 35.680959106959
-        self.longitude = 139.76730676352
+        guard let latitude = location?.coordinate.latitude else {return}
+        guard let longitude = location?.coordinate.longitude else {return}
+        self.latitude = latitude
+        self.longitude = longitude
         print("latitude:", self.latitude)
         print("longitude:", self.longitude)
     }
