@@ -15,9 +15,8 @@ class DetailViewController: UIViewController {
     @IBOutlet weak var foodDrinkView: FoodDrinkView!
     @IBOutlet weak var restaurantImageView: UIImageView!
     
-    private let url = "http://webservice.recruit.co.jp/hotpepper/gourmet/v1/?"
-    private let apiKey = "c7355e2429b8ed1a"
     var id: String = ""
+    let apiRequest = APIRequest()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -25,22 +24,8 @@ class DetailViewController: UIViewController {
     }
     
     func getRestaurantDetailInfo() {
-        let parameter = [
-            "key": apiKey,
-            "id": id,
-            "format": "json"
-        ]
-        
-        AF.request(url, method: .get, parameters: parameter).responseJSON { (response) in
-            do {
-                guard let data = response.data else {return}
-                let decoder = JSONDecoder()
-                let result = try decoder.decode(DetailResult.self, from: data)
-                guard let restaurant = result.results.restaurants.first else {return}
-                self.passValue(restaurant: restaurant)
-            }catch{
-                print("エラーが発生しました。", error)
-            }
+        apiRequest.getRestaurantDetailInfo(id: id) { (restaurant) in
+            self.passValue(restaurant: restaurant)
         }
     }
     
