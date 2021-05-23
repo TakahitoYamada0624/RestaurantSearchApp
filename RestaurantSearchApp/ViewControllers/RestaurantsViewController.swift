@@ -13,9 +13,8 @@ class RestaurantsViewController: UIViewController {
     @IBOutlet weak var restaurantsTableView: UITableView!
     
     var restaurants = [Restaurant]()
-    private let url = "http://webservice.recruit.co.jp/hotpepper/gourmet/v1/?"
-    private let apiKey = "c7355e2429b8ed1a"
-    var parameters = [String: Any]()
+    var addParameters = [String: Any]()
+    let apiRequest = APIRequest()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -27,36 +26,22 @@ class RestaurantsViewController: UIViewController {
     }
     
     func getRestarantsInfo() {
-        AF.request(url, method: .get, parameters: parameters).responseJSON { (response) in
-            do {
-                guard let data = response.data else {return}
-                let decoder = JSONDecoder()
-                let result = try decoder.decode(Result.self, from: data)
-                self.restaurants = result.results.restaurants
-                print("restaurants:", self.restaurants.count)
-                self.restaurantsTableView.reloadData()
-            }catch{
-                print("失敗しました", error)
-            }
+        let addParameters = self.addParameters
+        apiRequest.getRestaurantsInfo(addParameters: addParameters) { (restaurants) in
+            self.restaurants = restaurants.restaurants
+            print("restaurants:", self.restaurants.count)
+            self.restaurantsTableView.reloadData()
         }
     }
     
     func getMoreRestaurantsInfo() {
-        //何番目から取得するか
         let numberOfRestaurants: Int = restaurants.count + 1
-        parameters.updateValue(numberOfRestaurants, forKey: "start")
+        addParameters.updateValue(numberOfRestaurants, forKey: "start")
         
-        AF.request(url, method: .get, parameters: parameters).responseJSON { (response) in
-            do {
-                guard let data = response.data else {return}
-                let decoder = JSONDecoder()
-                let result = try decoder.decode(Result.self, from: data)
-                self.restaurants.append(contentsOf: result.results.restaurants)
-                print("restaurants:", self.restaurants.count)
-                self.restaurantsTableView.reloadData()
-            }catch{
-                print("失敗しました", error)
-            }
+        apiRequest.getRestaurantsInfo(addParameters: addParameters) { (restaurants) in
+            self.restaurants.append(contentsOf: restaurants.restaurants)
+            print("restaurants:", self.restaurants.count)
+            self.restaurantsTableView.reloadData()
         }
     }
     
@@ -89,6 +74,7 @@ extension RestaurantsViewController: UITableViewDataSource, UITableViewDelegate 
     }
     
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        print("indexpath", indexPath.row)
         if indexPath.row == (restaurants.count - 20) {
             getMoreRestaurantsInfo()
             print("count", restaurants.count)
