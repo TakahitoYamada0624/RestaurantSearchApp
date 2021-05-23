@@ -11,22 +11,21 @@ import Alamofire
 
 class APIRequest {
     
-    func getRestaurantsInfo(lat: CLLocationDegrees, lng: CLLocationDegrees, range: Int, start: Int,
-                            completion: @escaping (Restaurants) -> Void) {
+    func getRestaurantsInfo(addParameters: [String: Any], completion: @escaping (Restaurants) -> Void) {
         let url = "http://webservice.recruit.co.jp/hotpepper/gourmet/v1/?"
         let apiKey = "c7355e2429b8ed1a"
         
-        let parameters = [
+        var basicParameters = [
             "key": apiKey,
-            "lat": lat,
-            "lng": lng,
-            "range": range,
             "count": 50,
-            "start": start,
             "format": "json"
         ] as [String : Any]
+    
+        basicParameters.merge(addParameters) { basic, add in
+            return basic
+        }
         
-        AF.request(url, method: .get, parameters: parameters).responseJSON { (response) in
+        AF.request(url, method: .get, parameters: basicParameters).responseJSON { (response) in
             do{
                 guard let data = response.data else {return}
                 let decoder = JSONDecoder()
