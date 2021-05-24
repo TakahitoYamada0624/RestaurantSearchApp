@@ -20,24 +20,24 @@
                                 <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jtv-Hl-RNV">
-                                        <rect key="frame" x="0.0" y="0.0" width="414" height="950"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="414" height="980"/>
                                         <subviews>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ezh-n5-rsq" customClass="BasicInformationView" customModule="RestaurantSearchApp" customModuleProvider="target">
-                                                <rect key="frame" x="0.0" y="220" width="414" height="250"/>
+                                                <rect key="frame" x="0.0" y="220" width="414" height="280"/>
                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <constraints>
-                                                    <constraint firstAttribute="height" constant="250" id="LSw-t6-fkh"/>
+                                                    <constraint firstAttribute="height" constant="280" id="LSw-t6-fkh"/>
                                                 </constraints>
                                             </view>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="tAk-hI-qLr" customClass="PaymentView" customModule="RestaurantSearchApp" customModuleProvider="target">
-                                                <rect key="frame" x="0.0" y="480" width="414" height="200"/>
+                                                <rect key="frame" x="0.0" y="510" width="414" height="200"/>
                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="200" id="wQy-kI-Ihh"/>
                                                 </constraints>
                                             </view>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Zsj-Vn-CWR" customClass="FoodDrinkView" customModule="RestaurantSearchApp" customModuleProvider="target">
-                                                <rect key="frame" x="0.0" y="690" width="414" height="250"/>
+                                                <rect key="frame" x="0.0" y="720" width="414" height="250"/>
                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="250" id="rNw-xI-q5X"/>
@@ -58,7 +58,7 @@
                                             <constraint firstAttribute="trailing" secondItem="Ezh-n5-rsq" secondAttribute="trailing" id="IaY-lV-R1A"/>
                                             <constraint firstAttribute="bottom" secondItem="Zsj-Vn-CWR" secondAttribute="bottom" constant="10" id="Ohm-6e-FEg"/>
                                             <constraint firstItem="BWz-gt-FFe" firstAttribute="top" secondItem="jtv-Hl-RNV" secondAttribute="top" constant="10" id="Olw-6h-M4a"/>
-                                            <constraint firstAttribute="height" constant="950" id="Uj3-8h-BV9"/>
+                                            <constraint firstAttribute="height" constant="980" id="Uj3-8h-BV9"/>
                                             <constraint firstItem="Ezh-n5-rsq" firstAttribute="top" secondItem="BWz-gt-FFe" secondAttribute="bottom" constant="10" id="XXC-kp-mZa"/>
                                             <constraint firstItem="Zsj-Vn-CWR" firstAttribute="leading" secondItem="jtv-Hl-RNV" secondAttribute="leading" id="aR5-eQ-Qjf"/>
                                             <constraint firstAttribute="trailing" secondItem="BWz-gt-FFe" secondAttribute="trailing" id="bnu-Jg-xdc"/>
