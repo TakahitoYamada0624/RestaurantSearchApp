@@ -15,6 +15,7 @@ class SearchViewController: UIViewController {
     @IBOutlet weak var searchButton: UIButton!
     @IBOutlet weak var distanceLabel: UILabel!
     @IBOutlet weak var searchBar: UISearchBar!
+    @IBOutlet weak var favResCollectionView: UICollectionView!
     
     var locationManager: CLLocationManager!
     
@@ -23,6 +24,8 @@ class SearchViewController: UIViewController {
     var addParameters = [String: Any]()
     let apiRequest = APIRequest()
     private var notSelectDistance: Bool = true
+    var favRestaurantsId = UserDefaults.standard.object(forKey: "favRestaurantsId") as? [String]
+    var favRestaurands = [DetailRestaurant]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -31,7 +34,19 @@ class SearchViewController: UIViewController {
         locationManager.delegate = self
         searchBar.delegate = self
         
+        favResCollectionView.register(UINib(nibName: "FavRestaurantCell", bundle: nil), forCellWithReuseIdentifier: "FavRestaurantCell")
+        favResCollectionView.dataSource = self
+        favResCollectionView.delegate = self
+        
+        let layout = UICollectionViewFlowLayout()
+        layout.scrollDirection = .horizontal
+        layout.minimumLineSpacing = 10
+        layout.itemSize = CGSize(width: 200, height: 200)
+        favResCollectionView.collectionViewLayout = layout
+        
         getRestaurantsCount()
+        getFavRestaurantsInfo()
+        observeUserDefault()
     }
     
     //スライダーを動かしている時に呼ばれる
@@ -135,6 +150,27 @@ class SearchViewController: UIViewController {
         }
     }
     
+    func getFavRestaurantsInfo() {
+        guard let favRestaurantsId = favRestaurantsId else {return}
+        favRestaurands.removeAll()
+        for favRestaurantId in favRestaurantsId {
+            apiRequest.getRestaurantDetailInfo(id: favRestaurantId) { (restaurant) in
+                self.favRestaurands.append(restaurant)
+                self.favResCollectionView.reloadData()
+            }
+        }
+    }
+    
+    func observeUserDefault() {
+        UserDefaults.standard.addObserver(self, forKeyPath: "favRestaurantsId", options: [.new, .old], context: nil)
+    }
+    
+    override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
+        print("変更を検知しました。")
+        self.favRestaurantsId = UserDefaults.standard.object(forKey: "favRestaurantsId") as? [String]
+        getFavRestaurantsInfo()
+    }
+    
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         view.endEditing(true)
         getRestaurantsCount()
@@ -191,5 +227,28 @@ extension SearchViewController: UISearchBarDelegate {
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         searchBar.resignFirstResponder()
         getRestaurantsCount()
+    }
+}
+
+extension SearchViewController: UICollectionViewDataSource, UICollectionViewDelegate {
+    
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return favRestaurands.count
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "FavRestaurantCell", for: indexPath) as! FavRestaurantCell
+        let restaurantInfo = favRestaurands[indexPath.row]
+        cell.imageStr = restaurantInfo.photo.mobile.picture
+        cell.name = restaurantInfo.name
+        return cell
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let storyboard = UIStoryboard(name: "Detail", bundle: nil)
+        let detail = storyboard.instantiateViewController(withIdentifier: "Detail") as! DetailViewController
+        let restaurantInfo = favRestaurands[indexPath.row]
+        detail.id = restaurantInfo.id
+        navigationController?.pushViewController(detail, animated: true)
     }
 }
