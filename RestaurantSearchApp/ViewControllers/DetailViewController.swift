@@ -14,6 +14,7 @@ class DetailViewController: UIViewController {
     @IBOutlet weak var paymentView: PaymentView!
     @IBOutlet weak var foodDrinkView: FoodDrinkView!
     @IBOutlet weak var restaurantImageView: UIImageView!
+    var rightButtonItem: UIBarButtonItem!
     
     var id: String = ""
     let apiRequest = APIRequest()
@@ -21,6 +22,47 @@ class DetailViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         getRestaurantDetailInfo()
+        checkFavRestaurant()
+    }
+    
+    func checkFavRestaurant() {
+        let favRestaurants = UserDefaults.standard.object(forKey: "favRestaurantsId") as? [String]
+        if let _ = favRestaurants?.firstIndex(of: id){
+            let image = UIImage(systemName: "heart")
+            rightButtonItem = UIBarButtonItem(image: image, style: .plain, target: self, action: #selector(addOrReplaceFavorite))
+            rightButtonItem.tintColor = .systemPink
+            navigationItem.rightBarButtonItem = rightButtonItem
+        }else{
+            let image = UIImage(systemName: "heart.slash")
+            rightButtonItem = UIBarButtonItem(image: image, style: .plain, target: self, action: #selector(addOrReplaceFavorite))
+            navigationItem.rightBarButtonItem = rightButtonItem
+        }
+    }
+    
+    @objc func addOrReplaceFavorite() {
+        guard var favRestaurantsId = UserDefaults.standard.object(forKey: "favRestaurantsId") as? [String] else {
+            UserDefaults.standard.set([id], forKey: "favRestaurantsId")
+            let image = UIImage(systemName: "heart")
+            rightButtonItem = UIBarButtonItem(image: image, style: .plain, target: self, action: #selector(addOrReplaceFavorite))
+            rightButtonItem.tintColor = .systemPink
+            navigationItem.rightBarButtonItem = rightButtonItem
+            return
+        }
+        if let firstIndex = favRestaurantsId.firstIndex(of: id) {
+            favRestaurantsId.remove(at: firstIndex)
+            UserDefaults.standard.set(favRestaurantsId, forKey: "favRestaurantsId")
+            let image = UIImage(systemName: "heart.slash")
+            rightButtonItem = UIBarButtonItem(image: image, style: .plain, target: self, action: #selector(addOrReplaceFavorite))
+            navigationItem.rightBarButtonItem = rightButtonItem
+            
+        }else{
+            favRestaurantsId.append(id)
+            UserDefaults.standard.set(favRestaurantsId, forKey: "favRestaurantsId")
+            let image = UIImage(systemName: "heart")
+            rightButtonItem = UIBarButtonItem(image: image, style: .plain, target: self, action: #selector(addOrReplaceFavorite))
+            rightButtonItem.tintColor = .systemPink
+            navigationItem.rightBarButtonItem = rightButtonItem
+        }
     }
     
     func getRestaurantDetailInfo() {
@@ -46,7 +88,7 @@ class DetailViewController: UIViewController {
         do {
             let data = try Data(contentsOf: url)
             restaurantImageView.image = UIImage(data: data)
-            restaurantImageView.contentMode = .scaleAspectFill
+            restaurantImageView.contentMode = .scaleAspectFit
         }catch{
             print("失敗しました。")
         }
