@@ -11,6 +11,8 @@ import Alamofire
 
 class SearchViewController: UIViewController {
     
+    let apiRequest = APIRequest()
+    
     @IBOutlet weak var distanceSlider: UISlider!
     @IBOutlet weak var searchButton: UIButton!
     @IBOutlet weak var distanceLabel: UILabel!
@@ -18,11 +20,9 @@ class SearchViewController: UIViewController {
     @IBOutlet weak var favResCollectionView: UICollectionView!
     
     var locationManager: CLLocationManager!
-    
     private var latitude: CLLocationDegrees = 35.680959106959
     private var longitude: CLLocationDegrees = 139.76730676352
     var addParameters = [String: Any]()
-    let apiRequest = APIRequest()
     private var notSelectDistance: Bool = true
     var favRestaurantsId = UserDefaults.standard.object(forKey: "favRestaurantsId") as? [String]
     var favRestaurands = [DetailRestaurant]()
@@ -38,18 +38,22 @@ class SearchViewController: UIViewController {
         favResCollectionView.dataSource = self
         favResCollectionView.delegate = self
         
+        getRestaurantsCount()
+        getFavRestaurantsInfo()
+        observeUserDefault()
+        setupLayout()
+    }
+    
+    func setupLayout() {
+        navigationItem.title = "検索画面"
+        
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
         layout.minimumLineSpacing = 10
         layout.itemSize = CGSize(width: 200, height: 200)
         favResCollectionView.collectionViewLayout = layout
-        
-        getRestaurantsCount()
-        getFavRestaurantsInfo()
-        observeUserDefault()
     }
     
-    //スライダーを動かしている時に呼ばれる
     @IBAction func selectDistance(_ sender: Any) {
         
         let value = distanceSlider.value
@@ -57,34 +61,27 @@ class SearchViewController: UIViewController {
         switch value {
         case 0 ..< 0.2:
             distanceLabel.text = "300m"
-            print("300m")
         case 0.2 ..< 0.4:
             distanceLabel.text = "500m"
-            print("500m")
         case 0.4 ..< 0.6:
             distanceLabel.text = "1,000m"
-            print("1,000m")
         case 0.6 ..< 0.8:
             distanceLabel.text = "2,000m"
-            print("2,000m")
         case 0.8 ... 1:
             distanceLabel.text = "3,000m"
-            print("3,000m")
         default:
-            print("予想外の挙動が起きました")
+            showAlert(title: "エラー", message: "不正な値です")
         }
     }
     
     //スライダーから指が離れた時に呼ばれる
     @IBAction func releasedSlider(_ sender: Any) {
-        print("スライダーを外しました")
         notSelectDistance = false
         getRestaurantsCount()
     }
     
     //検索ボタンを押した時に呼ばれる
     @IBAction func searchRestaurants(_ sender: Any) {
-        print("検索ボタンが押されました。")
         let storyboard = UIStoryboard(name: "Restaurants", bundle: nil)
         let restaurants = storyboard.instantiateViewController(withIdentifier: "Restaurants") as! RestaurantsViewController
         restaurants.addParameters = self.addParameters
@@ -108,7 +105,7 @@ class SearchViewController: UIViewController {
         case 0.8 ... 1:
             range = 5
         default:
-            print("予想外の挙動が起きました")
+            showAlert(title: "エラー", message: "不正な値です")
         }
         
         let searchTextIsEmpty = searchBar.text?.isEmpty ?? false
@@ -144,9 +141,15 @@ class SearchViewController: UIViewController {
         }
         
         apiRequest.getRestaurantsInfo(addParameters: addPara){ (restaurants) in
-            self.searchButton.setTitle("\(restaurants.matchCount)件", for: .normal)
-            print("restaurantCount", restaurants.matchCount)
-            self.addParameters = addPara
+            if restaurants.matchCount == 0 {
+                self.searchButton.isEnabled = false
+                self.searchButton.setTitle("\(restaurants.matchCount)件", for: .normal)
+                self.addParameters = addPara
+            }else{
+                self.searchButton.isEnabled = true
+                self.searchButton.setTitle("\(restaurants.matchCount)件", for: .normal)
+                self.addParameters = addPara
+            }
         }
     }
     
@@ -166,9 +169,13 @@ class SearchViewController: UIViewController {
     }
     
     override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
-        print("変更を検知しました。")
         self.favRestaurantsId = UserDefaults.standard.object(forKey: "favRestaurantsId") as? [String]
-        getFavRestaurantsInfo()
+        if favRestaurantsId == [] {
+            favRestaurands.removeAll()
+            favResCollectionView.reloadData()
+        }else{
+            getFavRestaurantsInfo()
+        }
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -181,19 +188,17 @@ extension SearchViewController: CLLocationManagerDelegate {
     func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
         switch manager.authorizationStatus {
         case .authorizedAlways, .authorizedWhenInUse:
-            
             locationManager.startUpdatingLocation()
             locationManager.distanceFilter = 10
             distanceSlider.isEnabled = true
 
         case .denied, .restricted:
-            print("denied, restricted")
-            showAlert()
+            showAlert(title: "位置情報の確認",
+                      message: "レストランを検索しやすくするために設定から位置情報を許可してください")
             distanceSlider.isEnabled = false
             notSelectDistance = true
 
         case .notDetermined:
-            print("notDetermined")
             manager.requestWhenInUseAuthorization()
             distanceSlider.isEnabled = false
             notSelectDistance = true
@@ -203,8 +208,8 @@ extension SearchViewController: CLLocationManagerDelegate {
         }
     }
     
-    func showAlert() {
-        let alert = UIAlertController(title: "位置情報の確認", message:  "レストランを検索しやすくするために設定から位置情報を許可してください" , preferredStyle: .alert)
+    func showAlert(title: String, message: String) {
+        let alert = UIAlertController(title: title, message: message , preferredStyle: .alert)
         let ok = UIAlertAction(title: "閉じる", style: .default) { (action) in
             self.dismiss(animated: true, completion: nil)
         }
@@ -218,8 +223,6 @@ extension SearchViewController: CLLocationManagerDelegate {
         guard let longitude = location?.coordinate.longitude else {return}
         self.latitude = latitude
         self.longitude = longitude
-        print("latitude:", self.latitude)
-        print("longitude:", self.longitude)
     }
 }
 
