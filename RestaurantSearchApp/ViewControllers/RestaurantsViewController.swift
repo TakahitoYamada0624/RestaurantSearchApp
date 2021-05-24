@@ -28,10 +28,11 @@ class RestaurantsViewController: UIViewController {
     
     func getRestarantsInfo() {
         let addParameters = self.addParameters
+        
         apiRequest.getRestaurantsInfo(addParameters: addParameters) { (restaurants) in
             self.restaurants = restaurants.restaurants
             self.matchCount = restaurants.matchCount
-            print("restaurants:", self.restaurants.count)
+            self.navigationItem.title = "\(self.matchCount)件の表示"
             self.restaurantsTableView.reloadData()
         }
     }
@@ -76,11 +77,9 @@ extension RestaurantsViewController: UITableViewDataSource, UITableViewDelegate 
     }
     
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        print("indexpath", indexPath.row)
         let count = restaurants.count
         if indexPath.row == (count - 20) && count != matchCount {
             getMoreRestaurantsInfo()
-            print("count", restaurants.count)
         }
     }
     
