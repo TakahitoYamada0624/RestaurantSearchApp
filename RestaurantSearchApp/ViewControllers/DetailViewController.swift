@@ -48,6 +48,7 @@ class DetailViewController: UIViewController {
             navigationItem.rightBarButtonItem = rightButtonItem
             return
         }
+        
         if let firstIndex = favRestaurantsId.firstIndex(of: id) {
             favRestaurantsId.remove(at: firstIndex)
             UserDefaults.standard.set(favRestaurantsId, forKey: "favRestaurantsId")
@@ -73,6 +74,7 @@ class DetailViewController: UIViewController {
     
     func passValue(restaurant: DetailRestaurant) {
         basicInformationView.name = restaurant.name
+        self.navigationItem.title = restaurant.name
         basicInformationView.open = restaurant.open
         basicInformationView.address = restaurant.address
         basicInformationView.access = restaurant.access
@@ -90,7 +92,7 @@ class DetailViewController: UIViewController {
             restaurantImageView.image = UIImage(data: data)
             restaurantImageView.contentMode = .scaleAspectFit
         }catch{
-            print("失敗しました。")
+            print("データへの変更に失敗しました。")
         }
     }
 }
