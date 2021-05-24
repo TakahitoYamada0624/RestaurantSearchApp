@@ -21,6 +21,7 @@ class DetailRestaurants: Decodable {
 
 class DetailRestaurant: Decodable {
     let photo: DetailPhoto
+    let id: String
     let name: String
     let open: String
     let address: String
@@ -35,6 +36,7 @@ class DetailRestaurant: Decodable {
     
     enum CodingKeys: String, CodingKey {
         case photo
+        case id
         case name
         case open
         case address
